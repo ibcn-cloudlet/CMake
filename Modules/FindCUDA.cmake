@@ -821,6 +821,10 @@ mark_as_advanced(
 macro(FIND_CUDA_HELPER_LIBS _name)
   cuda_find_library_local_first(CUDA_${_name}_LIBRARY ${_name} "\"${_name}\" library")
   mark_as_advanced(CUDA_${_name}_LIBRARY)
+  # Look for static librarys if dynamic libs are not found (used in cross compilation).
+  if(CUDA_${_name}_LIBRARY MATCHES "NOTFOUND")
+    cuda_find_library_local_first(CUDA_${_name}_LIBRARY "${_name}_static" "\"${_name}\" library")
+  endif()
 endmacro()
 
 #######################
